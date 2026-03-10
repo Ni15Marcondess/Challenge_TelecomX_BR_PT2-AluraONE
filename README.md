@@ -5,67 +5,91 @@
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
 
 ## 📖 Sobre o Projeto
-Este projeto apresenta uma solução completa de ciência de dados para o problema de **Churn** (evasão de clientes) da empresa fictícia Telecom X. O trabalho foi dividido em duas fases principais:
-1. **Análise Exploratória (EDA):** Identificação de padrões e comportamentos dos clientes.
-2. **Machine Learning:** Desenvolvimento de modelos preditivos para antecipar cancelamentos.
+Este projeto apresenta uma solução de ciência de dados de ponta a ponta para o problema de **Churn** (evasão de clientes) da Telecom X. O trabalho evoluiu de uma análise descritiva inicial para a construção de modelos preditivos capazes de antecipar o cancelamento de serviços, permitindo que a empresa tome decisões baseadas em dados para reter sua base de clientes.
 
 ---
 
-## 🎯 O Problema de Negócio
-A Telecom X identificou uma perda significativa de receita devido ao cancelamento de assinaturas. O objetivo deste projeto foi descobrir **por que** os clientes saem e criar uma ferramenta que avise **quem** tem maior probabilidade de sair, permitindo ações preventivas de retenção.
+## 🎯 Objetivos do Projeto
+* **Explorar e Limpar:** Extrair dados de fontes complexas (JSON) e garantir a qualidade para análise.
+* **Identificar Padrões:** Entender quais perfis de clientes e serviços estão mais propensos à evasão.
+* **Prever o Churn:** Desenvolver modelos de Machine Learning para sinalizar clientes em risco com antecedência.
 
 ---
 
-## 🛠️ Tecnologias e Ferramentas
-* **Linguagem:** Python 3.x
-* **Manipulação de Dados:** Pandas, NumPy
-* **Visualização:** Matplotlib, Seaborn
-* **Machine Learning:** Scikit-Learn (Logistic Regression, Random Forest, StandardScaler)
+## 🛠️ Tecnologias Utilizadas
+* **Python** (Linguagem principal)
+* **Pandas & NumPy:** Manipulação e tratamento de dados estruturados.
+* **Matplotlib & Seaborn:** Visualização de dados e matrizes de confusão.
+* **Scikit-Learn:** Implementação de algoritmos de Machine Learning (Logistic Regression e Random Forest), Escalonamento (StandardScaler) e Métricas de Avaliação.
 
 ---
 
 ## 📂 Estrutura do Repositório
-* `TelecomX_BR.ipynb`: Notebook contendo todo o código, desde a limpeza até o modelo final.
-* `TelecomX_tratado.csv`: Dataset limpo e padronizado após a Fase 1.
-* `README.md`: Documentação do projeto.
+```text
+telecom-x-churn-analysis
+│
+├── TelecomX_BR.ipynb           # Notebook completo (ETL, EDA e Machine Learning)
+├── TelecomX_Data.json          # Base de dados bruta (JSON aninhado)
+├── TelecomX_tratado.csv        # Dataset limpo e padronizado gerado na Parte 1
+└── README.md                   # Documentação do projeto
+
+```
 
 ---
 
-## 📊 Fase 1: Descobertas Principais (EDA)
-Durante a análise exploratória, identificamos os "sinais de alerta" da empresa:
-* **Fibra Óptica:** Clientes com esta tecnologia cancelam muito mais do que os de planos DSL.
-* **Contratos Mensais:** A ausência de fidelidade facilita a saída imediata.
-* **O "Vale do Churn":** A maior parte das desistências ocorre nos primeiros 12 meses de contrato.
+## ⚙️ Etapas de Desenvolvimento
+
+### 1️⃣ ETL e Limpeza (Parte 1)
+
+* Achatamento de dados JSON aninhados via `json_normalize`.
+* Tratamento de tipos de dados (conversão de `Total` para float).
+* Padronização de strings e remoção de colunas irrelevantes (`customerID`).
+
+### 2️⃣ Análise Exploratória e Correlação
+
+* Identificação de desbalanceamento de classe (26% de Churn).
+* Uso de Heatmaps para identificar que **Fibra Óptica** e **Mensalidades Altas** são os maiores preditores de saída.
+* Constatação de que o **Tempo de Contrato (Tenure)** é o principal fator de retenção.
+
+### 3️⃣ Modelagem Preditiva (Parte 2)
+
+* **Pré-processamento:** Aplicação de *One-Hot Encoding* para variáveis categóricas e *StandardScaler* para normalização.
+* **Divisão de Dados:** Separação em 80% treino e 20% teste com estratificação.
+* **Treinamento:** Comparação entre **Regressão Logística** (Modelo Linear) e **Random Forest** (Modelo de Árvores).
 
 ---
 
-## 🤖 Fase 2: Inteligência Preditiva
-Preparamos os dados com *One-Hot Encoding* e *Standard Scaling* para treinar dois modelos de classificação.
+## 📊 Resultados e Performance
 
-### Comparativo de Performance
-| Modelo | Acurácia | Recall (Foco no Churn) | F1-Score |
-| :--- | :---: | :---: | :---: |
-| **Regressão Logística** | **79%** | **52%** | **0.57** |
-| Random Forest | 78% | 45% | 0.53 |
+Avaliamos os modelos focando no **Recall**, pois para o negócio é mais custoso perder um cliente não identificado do que gerar um "falso alarme".
 
-**Decisão Técnica:** Optamos pela **Regressão Logística**. Para o negócio, o *Recall* é a métrica mais valiosa, pois indica nossa capacidade de identificar o cliente em risco. A Regressão Logística conseguiu identificar 52% dos casos de Churn real, superando o Random Forest.
+| Modelo | Acurácia | Recall (Sensibilidade) | F1-Score |
+| --- | --- | --- | --- |
+| **Regressão Logística** | **79,3%** | **52,1%** | **0.57** |
+| Random Forest | 78,5% | 45,4% | 0.53 |
 
-
+**Conclusão Técnica:** A **Regressão Logística** foi selecionada como o modelo final devido à sua melhor capacidade de generalização e superioridade em identificar clientes em evasão (melhor Recall), sem apresentar o *overfitting* observado no Random Forest.
 
 ---
 
-## 💡 Insights e Recomendações Estratégicas
-Com base nos coeficientes do modelo e na importância das variáveis, recomendamos:
+## 🧠 Insights e Estratégia de Negócio
 
-1. **Retenção Imediata:** Focar em clientes com menos de 1 ano de casa (baixo `tenure`).
-2. **Revisão de Produto:** Investigar a qualidade do serviço de Fibra Óptica, que é o principal preditor positivo de evasão.
-3. **Incentivo à Fidelidade:** Criar benefícios para migração de planos "mês a mês" para contratos anuais.
-4. **Alerta Financeiro:** Clientes com mensalidades muito acima da média devem receber ofertas personalizadas de "downgrade preventivo" para evitar o cancelamento total.
+Com base na inteligência do modelo, as recomendações para a Telecom X são:
+
+* **Foco no Onboarding:** Ações de retenção devem ser intensificadas nos primeiros 12 meses, onde o risco de churn é crítico.
+* **Plano de Ação para Fibra Óptica:** Investigar a estabilidade do serviço de fibra, que apresenta correlação anormal com cancelamentos.
+* **Incentivo à Fidelidade:** Converter clientes "mês a mês" para contratos anuais, utilizando o modelo para oferecer descontos preventivos aos clientes sinalizados com alto risco.
+
+---
+
+## 🚀 Melhorias Futuras
+
+* Implementação de técnicas de balanceamento de carga (SMOTE) para melhorar o Recall.
+* Teste de algoritmos de Boosting (como XGBoost ou LightGBM).
+* Criação de um dashboard interativo para monitoramento em tempo real dos clientes em risco.
 
 ---
 
 ## 👩‍💻 Autora
-**Nicole Marcondes** Analista de Machine Learning Júnior  
-*Projeto desenvolvido como desafio prático de análise de dados e modelagem preditiva.*
 
----
+Projeto desenvolvido por **Nicole Marcondes** como parte do desafio de Analista de Machine Learning da Telecom X.
