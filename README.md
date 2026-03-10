@@ -29,7 +29,6 @@ Este projeto apresenta uma solução de ciência de dados de ponta a ponta para 
 telecom-x-churn-analysis
 │
 ├── TelecomX_BR.ipynb           # Notebook completo (ETL, EDA e Machine Learning)
-├── TelecomX_Data.json          # Base de dados bruta (JSON aninhado)
 ├── TelecomX_tratado.csv        # Dataset limpo e padronizado gerado na Parte 1
 └── README.md                   # Documentação do projeto
 
@@ -93,3 +92,4 @@ Com base na inteligência do modelo, as recomendações para a Telecom X são:
 ## 👩‍💻 Autora
 
 Projeto desenvolvido por **Nicole Marcondes** como parte do desafio de Analista de Machine Learning da Telecom X.
+
